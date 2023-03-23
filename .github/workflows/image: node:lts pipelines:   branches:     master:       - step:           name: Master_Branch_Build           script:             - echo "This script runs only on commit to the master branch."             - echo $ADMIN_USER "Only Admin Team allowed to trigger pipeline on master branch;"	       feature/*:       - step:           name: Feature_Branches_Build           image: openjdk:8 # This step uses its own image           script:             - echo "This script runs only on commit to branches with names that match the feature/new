@@ -1,0 +1,27 @@
+image: node: lts
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Master_Branch_Build
+          script:
+            - echo "This script runs only on commit to the master branch."
+            - echo $ADMIN_USER "Only Admin Team allowed to trigger pipeline on master branch;"	  
+    feature/*:
+      - step:
+          name: Feature_Branches_Build
+          image: openjdk:8 # This step uses its own image
+          script:
+            - echo "This script runs only on commit to branches with names that match the feature/* pattern."
+            - echo $AUTHORISED_USERS "Only authorised users allowed to trigger pipeline on feature branches"
+  tags:
+    'windows-*':
+      - step:
+          name: Build for windows-* tags
+          script:
+            - echo "Hi, Windows!"
+    'linux-*':
+      - step:
+          name: Build for linux-* tags
+          script:
+            - echo "Hello, Linux!"
